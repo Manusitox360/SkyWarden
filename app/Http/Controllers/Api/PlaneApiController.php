@@ -11,9 +11,8 @@ class PlaneApiController extends Controller
     
     public function index()
     {
-        return response()->json([
-            'data' => Plane::all(),
-        ], 200);
+        $planes = Plane::all();
+        return response()->json($planes, 200);
     }
 
 
@@ -25,7 +24,7 @@ class PlaneApiController extends Controller
         ]);
 
         $plane = Plane::create($validated);
-
+        
         return response()->json([
             'data' => $plane,
         ], 201);
@@ -60,6 +59,6 @@ class PlaneApiController extends Controller
     {
         $plane = Plane::findOrFail($id);
         $plane->delete();
-        return response()->json([]);
+        return response()->json([], 204);
     }
 }

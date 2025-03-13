@@ -40,7 +40,7 @@ class Flight extends Model
     // Verify if the flight is available
     public function isAvailable(): bool
     {
-        return $this->status === 'available' 
+        return $this->status === true 
             && $this->available_seats > 0 
             && $this->departure_date > now();
     }

@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->foreignId('flight_id')->constrained('flights');
         $table->boolean('status');
-        $table->integer('price');
+        $table->integer('seat_number');
         $table->timestamps();
     }
     );

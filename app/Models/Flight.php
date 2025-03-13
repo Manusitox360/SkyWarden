@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     use HasFactory;
+
     protected $table = 'flights';
+
     protected $fillable = [
         'plane_id',
+        'price',
         'departure_date',
         'departure_location',
         'arrival_date',
@@ -25,20 +28,25 @@ class Flight extends Model
         return $this->belongsTo(Plane::class);
     }
 
-    // Departure location
+    // Departure location Relation
     public function departureLocation()
     {
         return $this->belongsTo(Location::class, 'departure_location_id');
     }
 
-    // Arrival location
+    // Arrival location Relation
     public function arrivalLocation()
     {
         return $this->belongsTo(Location::class, 'arrival_location_id');
     }
 
+    // Relation with reservations
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
     // Verify if the flight is available
-    public function isAvailable(): bool
+    public function isFlightAvailable(): bool
     {
         return $this->status === true 
             && $this->available_seats > 0 

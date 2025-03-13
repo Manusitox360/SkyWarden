@@ -17,6 +17,7 @@ return new class extends Migration
             $table->dateTime('departure_date');
             $table->string('departure_location');
             $table->string('arrival_location');
+            $table->dateTime('arrival_date');
             $table->boolean('status');
             $table->integer('available_seats');
             $table->timestamps();

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->dropColumn(['departure_location', 'arrival_location']);
         
             // Agregar nuevas columnas FK
-            $table->foreignId('departure_location_id')->constrained('locations');
-            $table->foreignId('arrival_location_id')->constrained('locations');
+            $table->foreignId('departure_location_id')->constrained('locations')->onDelete('cascade');
+            $table->foreignId('arrival_location_id')->constrained('locations')->onDelete('cascade');
         });
     }
 
@@ -26,6 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        schema::table('flights', function (Blueprint $table) {
+           $table->dropColumn(['departure_location_id', 'arrival_location_id']);
+            $table->dropforeign(['departure_location_id', 'arrival_location_id']);
+        });
     }
 };

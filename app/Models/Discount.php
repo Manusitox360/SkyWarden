@@ -17,7 +17,7 @@ class Discount extends Model
     ];
 
     // Verify if the discount is available
-    public function isAvailable(): bool
+    public function isDiscountAvailable(): bool
     {
         return $this->status === true;
     }

@@ -57,7 +57,12 @@ class PlaneApiController extends Controller
     
     public function destroy(string $id)
     {
-        $plane = Plane::findOrFail($id);
+        $plane = Plane::find($id);
+        if (!$plane) {
+            return response()->json([
+                'message' => 'Plane not found',
+            ], 404);
+        }
         $plane->delete();
         return response()->json([], 204);
     }

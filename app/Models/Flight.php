@@ -19,7 +19,6 @@ class Flight extends Model
         'arrival_date',
         'arrival_location',
         'status',
-        'available_seats',
     ];
 
     // Relation with plane
@@ -51,5 +50,11 @@ class Flight extends Model
         return $this->status === true 
             && $this->available_seats > 0 
             && $this->departure_date > now();
+    }
+    
+    // Accessor for available seats
+    public function getAvailableSeatsAttribute()
+    {
+        return $this->plane->max_seat - $this->reservations->count();
     }
 }

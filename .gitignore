@@ -23,3 +23,4 @@ yarn-error.log
 /.zed
 *.log
 /coverage
+/storage

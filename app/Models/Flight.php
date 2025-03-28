@@ -15,9 +15,9 @@ class Flight extends Model
         'plane_id',
         'price',
         'departure_date',
-        'departure_location',
+        'departure_location_id',
         'arrival_date',
-        'arrival_location',
+        'arrival_location_id',
         'status',
     ];
 
@@ -48,7 +48,7 @@ class Flight extends Model
     public function isFlightAvailable(): bool
     {
         return $this->status === true 
-            && $this->available_seats > 0 
+            && $this->available_seats > 0 // Use snake_case for the accessor
             && $this->departure_date > now();
     }
     

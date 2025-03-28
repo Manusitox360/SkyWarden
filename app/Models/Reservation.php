@@ -12,6 +12,7 @@ class Reservation extends Model
     protected $table = 'reservations';
 
     protected $fillable = [
+        'user_id',
         'flight_id',
         'status',
         'seat_number',
@@ -27,5 +28,15 @@ class Reservation extends Model
     public function isReservationAvailable(): bool
     {
         return $this->status === true;
+    }
+    // Relation with user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    // Accessor for seat number
+    public function getSeatNumberAttribute($value)
+    {
+        return $value ? (int) $value : null;
     }
 }

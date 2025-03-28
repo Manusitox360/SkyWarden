@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Flight;
 use App\Models\Reservation;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ReservationApiController extends Controller
 {
@@ -24,6 +25,7 @@ class ReservationApiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => 'required|integer|min:0',
             'flight_id' => 'required|integer|min:0',
             'status' => 'required|boolean',
             'seat_number' => 'required|integer',
@@ -59,6 +61,7 @@ class ReservationApiController extends Controller
         }
 
         $validated = $request->validate([
+            'user_id' => 'integer|min:0',
             'flight_id' => 'integer|min:0',
             'status' => 'boolean',
             'seat_number' => 'integer',
@@ -66,6 +69,14 @@ class ReservationApiController extends Controller
         
         $flight_id = $validated['flight_id'] ?? $reservation->flight_id;
         $flight = Flight::find($flight_id);
+
+        $user_id = $validated['user_id'] ?? $reservation->user_id;
+        $user = User::find($user_id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
 
         $available_seat = $flight->available_seats;
         if ($available_seat < 1){

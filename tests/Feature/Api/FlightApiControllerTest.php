@@ -7,6 +7,10 @@ use Tests\TestCase;
 use App\Models\Flight;
 use App\Models\Plane;
 use App\Models\Location;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class FlightApiControllerTest extends TestCase
 {
@@ -27,6 +31,17 @@ class FlightApiControllerTest extends TestCase
 
     public function test_CanCreateAFlight(): void
     {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
+        $this->assertNotNull($token, "El token JWT no fue generado correctamente");
+        
+        
         // Arrange: Create a plane and locations
         $plane = Plane::factory()->create();
         $departureLocation = Location::factory()->create();
@@ -43,8 +58,11 @@ class FlightApiControllerTest extends TestCase
             'status' => true,
         ];
 
-        // Act: Send a POST request to create a flight
-        $response = $this->post(route('ApiStoreFlights'), $data);
+        // Act: Send a POST request to create a flight with admin authentication
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->post(route('ApiStoreFlights'), $data);
+        
 
         // Assert: Check if the flight was created successfully
         $response->assertStatus(201);
@@ -63,9 +81,19 @@ class FlightApiControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonFragment(['id' => $flight->id]); // Ensure the flight ID is present in the response
     }
-    
+
     public function test_CanUpdateAFlight(): void
     {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
+        
+        
         // Arrange: Create a flight
         $flight = Flight::factory()->create();
 
@@ -75,8 +103,10 @@ class FlightApiControllerTest extends TestCase
             'status' => false,
         ];
 
-        // Act: Send a PUT request to update the flight
-        $response = $this->put(route('ApiUpdateFlights', ['id' => $flight->id]), $updatedData);
+        // Act: Send a PUT request to update the flight with admin authentication
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->put(route('ApiUpdateFlights', ['id' => $flight->id]), $updatedData);
 
         // Assert: Check if the flight was updated successfully
         $response->assertStatus(200);
@@ -85,11 +115,23 @@ class FlightApiControllerTest extends TestCase
 
     public function test_CanDeleteAFlight(): void
     {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
+        
+        
         // Arrange: Create a flight
         $flight = Flight::factory()->create();
 
-        // Act: Send a DELETE request to delete the flight
-        $response = $this->delete(route('ApiDestroyFlights', ['id' => $flight->id]));
+        // Act: Send a DELETE request to delete the flight with admin authentication
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->delete(route('ApiDestroyFlights', ['id' => $flight->id]),);
 
         // Assert: Check if the flight was deleted successfully
         $response->assertStatus(200);

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Api;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Location;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LocationApiControllerTest extends TestCase
 {
@@ -25,6 +27,14 @@ class LocationApiControllerTest extends TestCase
 
     public function test_CanCreateALocation(): void
     {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
         // Arrange: Prepare location data
         $data = [
             'city' => 'New York',
@@ -33,7 +43,9 @@ class LocationApiControllerTest extends TestCase
         ];
 
         // Act: Send a POST request to create a location using the route name
-        $response = $this->post(route('ApiStoreLocation'), $data);
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->post(route('ApiStoreLocation'), $data);
 
         // Assert: Check if the location was created successfully
         $response->assertStatus(201);
@@ -55,6 +67,14 @@ class LocationApiControllerTest extends TestCase
 
     public function test_CanUpdateALocation(): void
     {
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
         // Arrange: Create a location
         $location = Location::factory()->create();
 
@@ -66,7 +86,9 @@ class LocationApiControllerTest extends TestCase
         ];
 
         // Act: Send a PUT request to update the location using the route name
-        $response = $this->put(route('ApiUpdateLocation', ['id' => $location->id]), $updatedData);
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->put(route('ApiUpdateLocation', ['id' => $location->id]), $updatedData);
 
         // Assert: Check if the location was updated successfully
         $response->assertStatus(200);
@@ -75,11 +97,21 @@ class LocationApiControllerTest extends TestCase
 
     public function test_CanDeleteALocation(): void
     {
-        // Arrange: Create a location
+        $admin = User::factory()->admin()->create();
+
+        $response = $this->post(route('auth.Login'), [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+        
+        $token = $response->json('access_token');
+
         $location = Location::factory()->create();
 
         // Act: Send a DELETE request to delete the location using the route name
-        $response = $this->delete(route('ApiDestroyLocation', ['id' => $location->id]));
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer" . $token,
+            'Accept' => 'application/json',])->delete(route('ApiDestroyLocation', ['id' => $location->id]));
 
         // Assert: Check if the location was deleted successfully
         $response->assertStatus(204);

@@ -102,8 +102,6 @@ class FlightApiController extends Controller
 
         $flight->delete();
 
-        return response()->json([
-            'message' => 'Flight deleted successfully',
-        ], 200);
+        return response()->json([], 200);
     }
 }

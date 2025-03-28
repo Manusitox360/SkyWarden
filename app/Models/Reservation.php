@@ -18,6 +18,7 @@ class Reservation extends Model
         'seat_number',
     ];
 
+    
     // Relation with flight
     public function flight()
     {

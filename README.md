@@ -91,6 +91,10 @@
      php artisan serve
      ```
    - Accede a la aplicación en: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+## Estructura de la BBDD
+![SQLDiagram](https://res.cloudinary.com/dkhuqpgam/image/upload/f_auto,q_auto/SQL%20Diagram%20Of%20SkyWarden)
+
 # Documentación de la API ✈️
 
 Esta es la documentación de la API del sistema de gestión de aerolíneas **SkyWarden**.

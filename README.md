@@ -20,11 +20,10 @@
 ### **Languages**:
 - PHP
 
-
 ### **Backend**: 
 - Laravel 11
 - PHP 8.2
-- MySQL/MariaDB.
+- MySQL/MariaDB
 
 ### **Frameworks**:
 - Laravel
@@ -32,7 +31,7 @@
 ### **Herramientas**: 
 - Postman (API testing)
 - Jira (gestión de tareas)
--PHPUnit (tests).
+- PHPUnit (tests)
 
 ### **Server**:
 - XAMPP
@@ -43,24 +42,55 @@
 
 ## Configuración Inicial ⚙️
 
-### Requisitos
-- PHP ≥ 8.2, Composer, MySQL.
-- Extensiones PHP: `mbstring`, `openssl`, `pdo`, `tokenizer`.
+### Requisitos  
+- PHP ≥ 8.2, Composer y MySQL.  
+- Extensiones PHP necesarias: `mbstring`, `openssl`, `pdo`, `tokenizer`.  
 
-### Pasos
-1. **Clonar el Repositorio**:
+### Pasos  
+
+1. **Clonar el Repositorio**  
    ```bash
    git clone https://github.com/tu-usuario/SkyWarden.git
    cd SkyWarden
-2. **Instalar Dependencias**:
+   ```
+
+2. **Instalar Dependencias**  
    ```bash
-    composer install
-3. **Configurar Entorno**:
+   composer install
+   ```
 
-4. **Migraciones**:
+3. **Configurar Entorno**  
+   - Copia el archivo `.env.example` y renómbralo a `.env`.  
+     ```bash
+     cp .env.example .env
+     ```
+   - Genera la clave de la aplicación:  
+     ```bash
+     php artisan key:generate
+     ```
+   - Configura la base de datos en el archivo `.env`:  
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=skywarden
+     DB_USERNAME=root
+     DB_PASSWORD=
+     ```
 
-5. **Iniciar Servidor**:
-6. 
+4. **Migraciones**  
+   - Ejecuta las migraciones para crear la estructura de la base de datos:  
+     ```bash
+     php artisan migrate --seed
+     ```
+   - El parámetro `--seed` permite llenar la base de datos con datos de prueba.  
+
+5. **Iniciar Servidor**  
+   - Levanta el servidor local de Laravel:  
+     ```bash
+     php artisan serve
+     ```
+   - Accede a la aplicación en: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 # Documentación de la API ✈️
 
 Esta es la documentación de la API del sistema de gestión de aerolíneas **SkyWarden**.

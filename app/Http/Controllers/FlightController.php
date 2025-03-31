@@ -15,7 +15,7 @@ class FlightController extends Controller
             ->orderBy('departure_date', 'asc')
             ->get();
 
-        return view('flights.index', compact('flights'));
+        return view('flights.AvailableFlights', compact('flights'));
     }
 
     /**

@@ -36,7 +36,7 @@ class ReservationController extends Controller
                 'user_id' => Auth::id(),
                 'flight_id' => $flight->id
             ]);
-            return redirect()->route('flights.index')->with('success', 'Vuelo reservado exitosamente!');
+            return redirect()->route('flights.AvailableFlights')->with('success', 'Vuelo reservado exitosamente!');
         }
 
         return redirect()->back()->with('error', 'No hay plazas disponibles.');
